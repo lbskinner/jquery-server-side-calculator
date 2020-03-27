@@ -1,6 +1,8 @@
 const express = require("express");
 const history = require("./modules/history.js");
-const bodyParser = require("boda-parser");
+const bodyParser = require("body-parser");
+
+const additionResult = require("./modules/addition.js");
 
 const app = express();
 const PORT = 5000;
