@@ -1,6 +1,6 @@
-# Project Name
+# Tier Week 8 Weekend Challenge: Server Side Calculator
 
-[Project Instructions](./INSTRUCTIONS.md), this line may be removed once you have updated the README.md
+[Here](./INSTRUCTIONS.md) is the instruction to the project instructions.
 
 ## Description
 
