@@ -1,6 +1,4 @@
-module.exports = = (num1, num2) => {
+module.exports = (num1, num2) => {
   const result = num1 / num2;
   return result;
 };
-
-
