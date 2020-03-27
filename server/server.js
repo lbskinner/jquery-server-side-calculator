@@ -2,7 +2,10 @@ const express = require("express");
 const history = require("./modules/history.js");
 const bodyParser = require("body-parser");
 
-const additionResult = require("./modules/addition.js");
+const addResult = require("./modules/addition.js");
+const subResult = require("./modules/subtraction.js");
+const multiplyResult = require("./modules/multiplication.js");
+const dividedResult = require("./modules/division.js");
 
 const app = express();
 const PORT = 5000;

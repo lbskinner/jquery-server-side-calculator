@@ -1,4 +1,4 @@
 module.exports = (num1, num2) => {
-  const sum = num1 + num2;
-  return sum;
+  const result = num1 + num2;
+  return result;
 };
