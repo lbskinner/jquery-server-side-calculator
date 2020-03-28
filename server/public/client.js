@@ -1,5 +1,6 @@
 $(document).ready(init);
 
+let allOperations = [];
 let operator = "";
 
 function init() {
@@ -36,6 +37,8 @@ function checkOperator(event) {
 }
 
 // API interactions
+
+// post numbers and operator input to server for calculation
 function sendNumbersToServer(dataObject) {
   $.ajax({
     method: "POST",
@@ -44,7 +47,7 @@ function sendNumbersToServer(dataObject) {
   })
     .then(response => {
       console.log(response);
-      //TODO get answer and get history
+      // get the calculation result from server
       getResult();
     })
     .catch(err => {
@@ -52,6 +55,7 @@ function sendNumbersToServer(dataObject) {
     });
 }
 
+// get result from server
 function getResult() {
   $.ajax({
     method: "GET",
@@ -59,7 +63,27 @@ function getResult() {
   })
     .then(response => {
       console.log(response);
-      render(response.result);
+      // display calculation result on DOM
+      renderResult(response.result);
+      //get history from server to display on DOM
+      getHistory();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+// get history from server
+function getHistory() {
+  $.ajax({
+    method: "GET",
+    url: "/history"
+  })
+    .then(response => {
+      console.log(response);
+      allOperations = response;
+      // display all history on DOM
+      renderHistory();
     })
     .catch(err => {
       console.log(err);
@@ -67,6 +91,18 @@ function getResult() {
 }
 
 // render to the DOM
-function render(result) {
+
+// render result to DOM
+function renderResult(result) {
   $(".js-calculator-result").text(result);
+}
+
+// render history to server
+function renderHistory() {
+  $(".js-display-history").empty();
+  for (let individualOperation of allOperations) {
+    $(".js-display-history").append(`
+        <li>${individualOperation.num1} ${individualOperation.operator} ${individualOperation.num2} = ${individualOperation.result}</li>
+        `);
+  }
 }
