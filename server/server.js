@@ -2,10 +2,6 @@ const express = require("express");
 const history = require("./modules/history.js");
 const bodyParser = require("body-parser");
 
-const addResult = require("./modules/addition.js");
-const subResult = require("./modules/subtraction.js");
-const multiplyResult = require("./modules/multiplication.js");
-const dividedResult = require("./modules/division.js");
 const calculateResult = require("./modules/calculate.js");
 
 const app = express();
