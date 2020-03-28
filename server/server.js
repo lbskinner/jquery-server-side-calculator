@@ -6,6 +6,7 @@ const addResult = require("./modules/addition.js");
 const subResult = require("./modules/subtraction.js");
 const multiplyResult = require("./modules/multiplication.js");
 const dividedResult = require("./modules/division.js");
+const calculateResult = require("./modules/calculate.js");
 
 const app = express();
 const PORT = 5000;
@@ -26,8 +27,8 @@ app.post("/numbers", (req, res) => {
   //below is the format the numbers will be send to the server
   //{
   //     num1: 20,
-  //     num2: '5
-  //     operator: ""
+  //     num2: 5,
+  //     operator: "+"
   // }
   num1 = numbers.num1;
   num2 = numbers.num2;
@@ -35,17 +36,12 @@ app.post("/numbers", (req, res) => {
   console.log(
     `First Number: ${num1}, Second Number: ${num2}, Operator: ${operator}`
   );
-  let historyObject = {};
-  if (operator === "+") {
-    result = { result: addResult(num1, num2) };
-  } else if (operator === "-") {
-    result = { result: subResult(num1, num2) };
-  } else if (operator === "*") {
-    result = { result: multiplyResult(num1, num2) };
-  } else if (operator === "/") {
-    result = { result: dividedResult(num1, num2) };
-  }
+  // calculate the result
+  result = { result: calculateResult(num1, operator, num2) };
   console.log(result);
+  // create empty object variable
+  let historyObject = {};
+  // set input values to history object and store it in history array
   historyObject = {
     num1,
     num2,
