@@ -26,8 +26,8 @@ app.post("/numbers", (req, res) => {
   //     num2: 5,
   //     operator: "+"
   // }
-  num1 = numbers.num1;
-  num2 = numbers.num2;
+  num1 = parseFloat(numbers.num1);
+  num2 = parseFloat(numbers.num2);
   operator = numbers.operator;
   console.log(
     `First Number: ${num1}, Second Number: ${num2}, Operator: ${operator}`
