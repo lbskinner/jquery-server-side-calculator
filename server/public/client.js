@@ -26,8 +26,6 @@ function submitNumbers() {
 function checkOperator(event) {
   const target = event.target;
   if (target.matches("button") != true) {
-    console.log("DID NOT CLICK ON AN OPERATOR BUTTON");
-
     return;
   }
   if (target.classList.contains("js-operator")) {
@@ -47,8 +45,28 @@ function sendNumbersToServer(dataObject) {
     .then(response => {
       console.log(response);
       //TODO get answer and get history
+      getResult();
     })
     .catch(err => {
       console.log(err);
     });
+}
+
+function getResult() {
+  $.ajax({
+    method: "GET",
+    url: "/result"
+  })
+    .then(response => {
+      console.log(response);
+      render(response.result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+// render to the DOM
+function render(result) {
+  $(".js-calculator-result").text(result);
 }
