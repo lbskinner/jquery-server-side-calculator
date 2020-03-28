@@ -9,18 +9,31 @@ function init() {
   $(".js-btn-equal").on("click", submitNumbers);
   // add event handler for operators
   $(".js-calculator-input").on("click", checkOperator);
+  // add event handler for clear button
+  $(".js-btn-clear").on("click", clearInputs);
 }
 
 // event handler
+
+function clearInputs() {
+  $(".js-input-num1").val("");
+  $(".js-input-num2").val("");
+  operator = "";
+}
+
 function submitNumbers() {
   console.log("EQUAL BUTTON CLICKED");
-  const newNumberInputs = {
-    num1: $(".js-input-num1").val(),
-    num2: $(".js-input-num2").val(),
-    operator: operator
-  };
-  console.log(newNumberInputs);
-  sendNumbersToServer(newNumberInputs);
+  if ($(".js-input-num1").val() && $(".js-input-num2").val()) {
+    const newNumberInputs = {
+      num1: $(".js-input-num1").val(),
+      num2: $(".js-input-num2").val(),
+      operator: operator
+    };
+    console.log(newNumberInputs);
+    sendNumbersToServer(newNumberInputs);
+  } else {
+    alert("Please enter a number!");
+  }
 }
 
 // find the correct operator key clicked
