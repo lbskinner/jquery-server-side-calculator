@@ -11,6 +11,8 @@ function init() {
   $(".js-calculator-input").on("click", checkOperator);
   // add event handler for clear button
   $(".js-btn-clear").on("click", clearInputs);
+  // display history upon page load
+  getHistory();
 }
 
 // event handler
