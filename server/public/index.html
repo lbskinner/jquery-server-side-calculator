@@ -8,11 +8,28 @@
     <script src="client.js" type="text/javascript"></script>
 
     <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <title>Server Side Calculator</title>
   </head>
   <body>
     <header>
-      <h1>Weekend Challenge: Server Side Calculator</h1>
+      <h1>Weekend Challenge #2</h1>
     </header>
+    <h2>Server Side Calculator</h2>
+    <div class="js-calculator-input">
+      <input type="number" class="js-input-num1" />
+      <button class="js-btn-plus">+</button>
+      <button class="js-btn-minus">-</button>
+      <button class="js-btn-multiply">*</button>
+      <button class="js-btn-divided">/</button>
+      <input type="number" class="js-input-num2" />
+      <button class="js-btn-equal">=</button>
+      <button class="js-btn-clear">C</button>
+    </div>
+    <div>
+      <h2 class="js-calculator-result">0</h2>
+    </div>
+    <div>
+      <ul class="js-display-history"></ul>
+    </div>
   </body>
 </html>

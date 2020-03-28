@@ -35,7 +35,7 @@ app.post("/numbers", (req, res) => {
   console.log(
     `First Number: ${num1}, Second Number: ${num2}, Operator: ${operator}`
   );
-  let historyValue = "";
+  let historyObject = {};
   if (operator === "+") {
     result = { result: addResult(num1, num2) };
   } else if (operator === "-") {
@@ -46,8 +46,13 @@ app.post("/numbers", (req, res) => {
     result = { result: dividedResult(num1, num2) };
   }
   console.log(result);
-  historyValue = `${num1} ${operator} ${num2} = ${result.result}`;
-  history.push({ calculation: historyValue });
+  historyObject = {
+    num1,
+    num2,
+    operator,
+    result: result.result
+  };
+  history.push(historyObject);
   res.sendStatus(201);
 });
 
