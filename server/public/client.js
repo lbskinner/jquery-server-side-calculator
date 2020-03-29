@@ -16,11 +16,25 @@ function init() {
   $(".js-btn-clear").on("click", clearInputs);
   //add event handler for clear history button
   $(".js-btn-clear-history").on("click", clearAllHistory);
+  // add event handler for click on history list
+  $(".js-display-history").on(
+    "click",
+    ".js-history-individual-calculation",
+    reRunHistoryCalculation
+  );
   // display history upon page load
   getHistory();
 }
 
 // event handler
+function reRunHistoryCalculation(event) {
+  console.log("RE-RUN CALC; ", this);
+  const historyCalculationIndex = $(this).data("index");
+  console.log("RE-RUN CALC; ", historyCalculationIndex);
+  answer = allOperations[historyCalculationIndex].result;
+  renderDisplay(answer);
+}
+
 function clearInputs() {
   // reset calculator display, num1, num2 and operator
   $(".js-calculator-display").val("");
@@ -155,9 +169,11 @@ function getResult() {
     .then(response => {
       console.log(response);
       answer = response.result;
-      let numAfterDecimal = answer.toString().split(".");
-      if (numAfterDecimal[1].length > 7) {
-        answer = answer.toFixed(7);
+      if (answer.toString().includes(".")) {
+        let numAfterDecimal = answer.toString().split(".");
+        if (numAfterDecimal[1].length > 7) {
+          answer = answer.toFixed(7);
+        }
       }
       // display calculation result on DOM
       renderDisplay(answer);
@@ -201,9 +217,10 @@ function renderDisplay(num) {
 // render history to server
 function renderHistory() {
   $(".js-display-history").empty();
-  for (let individualOperation of allOperations) {
+  for (let i = 0; i < allOperations.length; i++) {
+    const individualOperation = allOperations[i];
     $(".js-display-history").append(`
-        <li>${individualOperation.num1} ${individualOperation.operator} ${individualOperation.num2}</li>
+        <li class="js-history-individual-calculation" data-index="${i}">${individualOperation.num1} ${individualOperation.operator} ${individualOperation.num2}</li>
         `);
   }
 }
