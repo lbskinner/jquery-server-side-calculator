@@ -2,13 +2,13 @@ $(document).ready(init);
 
 let allOperations = [];
 let operator = "";
-let num1 = 0;
-let num2 = 0;
+let num1 = "";
+let num2 = "";
 
 function init() {
   console.log("READY");
   // add event handler
-  $(".js-btn-equal").on("click", submitNumbers);
+  $(".js-equal-sign").on("click", submitNumbers);
   // add event handler for keys pressed
   $(".js-calculator-btn").on("click", checkKeys);
   // add event handler for clear button
@@ -20,15 +20,17 @@ function init() {
 // event handler
 
 function clearInputs() {
-  $(".js-calculation-display").val("");
+  $(".js-calculator-display").val("");
   operator = "";
-  num1 = 0;
-  num2 = 0;
+  num1 = "";
+  num2 = "";
 }
 
 function submitNumbers() {
   console.log("EQUAL BUTTON CLICKED");
-  if ($(".js-calculator-display").val() != 0) {
+  if (!num1 || !operator || !num2) {
+    alert("Please enter a complete operation!");
+  } else {
     const newNumberInputs = {
       num1: num1,
       num2: num2,
@@ -36,8 +38,6 @@ function submitNumbers() {
     };
     console.log(newNumberInputs);
     sendNumbersToServer(newNumberInputs);
-  } else {
-    alert("Please enter a number!");
   }
 }
 
@@ -55,19 +55,27 @@ function checkKeys(event) {
   }
   if (target.classList.contains("js-number")) {
     console.log("NUMBER: ", target.value);
-    if (num1 != 0) {
-      num1 += target.value;
-    } else {
+    if (num1 == 0) {
       num1 = target.value;
+    } else if (num1 != 0 && !operator) {
+      num1 += target.value;
+    } else if (num1 != 0 && operator && num2 == 0) {
+      num2 = target.value;
+    } else if (num1 != 0 && operator && num2 != 0) {
+      num2 += target.value;
     }
-    renderDisplay(num1);
+
+    renderDisplay(num1 + operator + num2);
     return;
   }
   if (target.classList.contains("js-decimal")) {
     console.log("DECIMAL: ", target.value);
     if (!num1.includes(".")) {
       num1 += target.value;
-      renderDisplay(num1);
+      renderDisplay(num1 + operator + num2);
+    } else if (!num2.includes(".")) {
+      num2 += target.value;
+      renderDisplay(num1 + operator + num2);
     }
     return;
   }
@@ -130,9 +138,11 @@ function getHistory() {
 // render to the DOM
 
 // render keys clicked to DOM
-// function renderResult(result) {
-//   $(".js-calculator-result").text(result);
-// }
+function renderResult(result) {
+  $(".js-calculator-result").text(result);
+}
+
+// calculator display
 function renderDisplay(num) {
   $(".js-calculator-display").val(num);
 }
@@ -142,7 +152,7 @@ function renderHistory() {
   $(".js-display-history").empty();
   for (let individualOperation of allOperations) {
     $(".js-display-history").append(`
-        <li>${individualOperation.num1} ${individualOperation.operator} ${individualOperation.num2} = ${individualOperation.result}</li>
+        <li>${individualOperation.num1} ${individualOperation.operator} ${individualOperation.num2}</li>
         `);
   }
 }
