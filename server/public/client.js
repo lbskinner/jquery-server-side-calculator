@@ -137,7 +137,7 @@ function getResult() {
   })
     .then(response => {
       console.log(response);
-      answer = response.result;
+      answer = response.result.toFixed(11);
       // display calculation result on DOM
       renderDisplay(answer);
       //get history from server to display on DOM
