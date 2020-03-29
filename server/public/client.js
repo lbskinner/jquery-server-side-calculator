@@ -14,6 +14,8 @@ function init() {
   $(".js-calculator-btn").on("click", checkKeys);
   // add event handler for clear button
   $(".js-btn-clear").on("click", clearInputs);
+  //add event handler for clear history button
+  $(".js-btn-clear-history").on("click", clearAllHistory);
   // display history upon page load
   getHistory();
 }
@@ -60,7 +62,7 @@ function checkKeys(event) {
     // if answer has a value and operator is being clicked,
     // the answer from previous became num1 and num2 reset
     if (answer && operator) {
-      num1 = answer;
+      num1 = answer.toString();
       num2 = "";
     }
     // display num1 and variable on calculator display
@@ -95,8 +97,8 @@ function checkKeys(event) {
   // if event target clicked has class js-decimal is true
   if (target.classList.contains("js-decimal")) {
     console.log("DECIMAL: ", target.value);
-    // if num1 does not include a "."
-    if (!num1.includes(".")) {
+    // if num1 does not include a "." and operator has not been pressed
+    if (!num1.includes(".") && !operator) {
       // concatenate the "." to num1
       num1 += target.value;
       renderDisplay(num1);
@@ -112,6 +114,21 @@ function checkKeys(event) {
 
 // API interactions
 
+// delete/clear all history
+
+function clearAllHistory() {
+  $.ajax({
+    method: "DELETE",
+    url: "/delete"
+  })
+    .then(response => {
+      console.log(response);
+      getHistory();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
 // post numbers and operator input to server for calculation
 function sendNumbersToServer(dataObject) {
   $.ajax({
@@ -137,7 +154,11 @@ function getResult() {
   })
     .then(response => {
       console.log(response);
-      answer = response.result.toFixed(11);
+      answer = response.result;
+      let numAfterDecimal = answer.toString().split(".");
+      if (numAfterDecimal[1].length > 7) {
+        answer = answer.toFixed(7);
+      }
       // display calculation result on DOM
       renderDisplay(answer);
       //get history from server to display on DOM
@@ -167,10 +188,10 @@ function getHistory() {
 
 // render to the DOM
 
-// render keys clicked to DOM
-function renderResult(result) {
-  $(".js-calculator-result").text(result);
-}
+// render result to DOM, not longer used
+// function renderResult(result) {
+//   $(".js-calculator-result").text(result);
+// }
 
 // display inputs on calculator display
 function renderDisplay(num) {

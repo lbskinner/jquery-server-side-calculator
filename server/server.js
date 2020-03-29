@@ -58,6 +58,14 @@ app.get("/history", (req, res) => {
   res.send(history);
 });
 
+// delete/clear all history
+app.delete("/delete", (req, res) => {
+  history.length = 0;
+  console.log(history);
+
+  res.sendStatus(204);
+});
+
 // runs server
 app.listen(PORT, (req, res) => {
   console.log(`I'm listening on PORT: ${PORT}`);
