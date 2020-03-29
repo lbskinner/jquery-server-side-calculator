@@ -4,6 +4,7 @@ let allOperations = [];
 let operator = "";
 let num1 = "";
 let num2 = "";
+let answer = "";
 
 function init() {
   console.log("READY");
@@ -18,16 +19,18 @@ function init() {
 }
 
 // event handler
-
 function clearInputs() {
+  // reset calculator display, num1, num2 and operator
   $(".js-calculator-display").val("");
   operator = "";
   num1 = "";
   num2 = "";
+  answer = "";
 }
 
 function submitNumbers() {
   console.log("EQUAL BUTTON CLICKED");
+  // don't allow send data to server unless all necessary inputs
   if (!num1 || !operator || !num2) {
     alert("Please enter a complete operation!");
   } else {
@@ -37,6 +40,7 @@ function submitNumbers() {
       operator: operator
     };
     console.log(newNumberInputs);
+    // send data to server
     sendNumbersToServer(newNumberInputs);
   }
 }
@@ -44,36 +48,61 @@ function submitNumbers() {
 // find the correct key clicked
 function checkKeys(event) {
   const target = event.target;
+  // if the event target clicked is not a button, exit the function
   if (target.matches("button") != true) {
     return;
   }
+  // if event targe clicked has class js-operator us true
   if (target.classList.contains("js-operator")) {
     console.log("OPERATOR: ", target.value);
+    // set the value of the button clicked to variable operator
     operator = target.value;
+    // if answer has a value and operator is being clicked,
+    // the answer from previous became num1 and num2 reset
+    if (answer && operator) {
+      num1 = answer;
+      num2 = "";
+    }
+    // display num1 and variable on calculator display
     renderDisplay(num1 + operator);
     return;
   }
+  // if event target clicked has class js-number is true
   if (target.classList.contains("js-number")) {
     console.log("NUMBER: ", target.value);
-    if (num1 == 0) {
+    // set the value of the button clicked to num1 or num2 based on the following condition
+    // if num1 does not have a value
+    if (!num1) {
+      // num1 equals the value of the button clicked
       num1 = target.value;
-    } else if (num1 != 0 && !operator) {
+      //else if num1 has a value and the operator does not have a value
+    } else if (num1 && !operator) {
+      // num1 equals to num1 concatenate value of button clicked
       num1 += target.value;
-    } else if (num1 != 0 && operator && num2 == 0) {
+      // else if num1 and operator have values and num2 does not have a value
+    } else if (num1 && operator && !num2) {
+      // num2 equals to the value of the button clicked
       num2 = target.value;
-    } else if (num1 != 0 && operator && num2 != 0) {
+      // else if num1, operator and num2 all have values
+    } else if (num1 && operator && num2) {
+      // num2 equals to num1 concatenate value of button clicked
       num2 += target.value;
     }
-
+    // display num1, operator, and num2 on calculator display
     renderDisplay(num1 + operator + num2);
     return;
   }
+  // if event target clicked has class js-decimal is true
   if (target.classList.contains("js-decimal")) {
     console.log("DECIMAL: ", target.value);
+    // if num1 does not include a "."
     if (!num1.includes(".")) {
+      // concatenate the "." to num1
       num1 += target.value;
-      renderDisplay(num1 + operator + num2);
+      renderDisplay(num1);
+      // else if num2 does not include a "."
     } else if (!num2.includes(".")) {
+      // concatenate the "." to num2
       num2 += target.value;
       renderDisplay(num1 + operator + num2);
     }
@@ -108,8 +137,9 @@ function getResult() {
   })
     .then(response => {
       console.log(response);
+      answer = response.result;
       // display calculation result on DOM
-      renderResult(response.result);
+      renderDisplay(answer);
       //get history from server to display on DOM
       getHistory();
     })
@@ -142,7 +172,7 @@ function renderResult(result) {
   $(".js-calculator-result").text(result);
 }
 
-// calculator display
+// display inputs on calculator display
 function renderDisplay(num) {
   $(".js-calculator-display").val(num);
 }
