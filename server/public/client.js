@@ -28,13 +28,16 @@ function init() {
 
 // event handler
 function reRunHistoryCalculation(event) {
-  console.log("RE-RUN CALC; ", this);
   const historyCalculationIndex = $(this).data("index");
   console.log("RE-RUN CALC; ", historyCalculationIndex);
   answer = allOperations[historyCalculationIndex].result;
+  // format decimal places to 7 if there are more
   if (answer.toString().includes(".")) {
+    // split the answer into an array with two items, the integer before the decimal and the numbers after the decimal
     let numAfterDecimal = answer.toString().split(".");
+    // check for the length of the numbers after the decimal places
     if (numAfterDecimal[1].length > 7) {
+      // if decimal places is more than 7 then sent decimal places to 7
       answer = answer.toFixed(7);
     }
   }
@@ -139,13 +142,13 @@ function getResult() {
     .then(response => {
       console.log(response);
       answer = response.result;
+      // format display decimal places, see reRunHistoryCalculation() function for details
       if (answer.toString().includes(".")) {
         let numAfterDecimal = answer.toString().split(".");
         if (numAfterDecimal[1].length > 7) {
           answer = answer.toFixed(7);
         }
       }
-      //   formatDisplayDecimal(answer);
       // display calculation result on DOM
       renderDisplay(answer);
       //get history from server to display on DOM
