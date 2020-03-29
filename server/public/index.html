@@ -15,15 +15,30 @@
       <h1>Weekend Challenge #2</h1>
     </header>
     <h2>Server Side Calculator</h2>
-    <div class="js-calculator-input">
-      <input type="number" class="js-input-num1" />
-      <button class="js-btn-plus js-operator" value="+">+</button>
-      <button class="js-btn-minus js-operator" value="-">-</button>
-      <button class="js-btn-multiply js-operator" value="*">*</button>
-      <button class="js-btn-divided js-operator" value="/">/</button>
-      <input type="number" class="js-input-num2" />
-      <button class="js-btn-equal">=</button>
-      <button class="js-btn-clear">C</button>
+
+    <input type="text" class="js-calculator-display display" disabled />
+    <button class="js-btn-clear clear-btn">C</button>
+
+    <div class="js-calculator-btn calculator-keys-container">
+      <button class="js-number" value="7">7</button>
+      <button class="js-number" value="8">8</button>
+      <button class="js-number" value="9">9</button>
+      <button class="js-operator" value="+">+</button>
+
+      <button class="js-number" value="4">4</button>
+      <button class="js-number" value="5">5</button>
+      <button class="js-number" value="6">6</button>
+      <button class="js-operator" value="-">-</button>
+
+      <button class="js-number" value="1">1</button>
+      <button class="js-number" value="2">2</button>
+      <button class="js-number" value="3">3</button>
+      <button class="js-operator" value="*">*</button>
+
+      <button class="js-number" value="0">0</button>
+      <button class="js-decimal" value=".">.</button>
+      <button class="js-equal-sign js-operator" value="=">=</button>
+      <button class="js-operator" value="/">/</button>
     </div>
     <div>
       <h2 class="js-calculator-result"></h2>

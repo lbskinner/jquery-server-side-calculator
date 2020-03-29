@@ -2,13 +2,15 @@ $(document).ready(init);
 
 let allOperations = [];
 let operator = "";
+let num1 = 0;
+let num2 = 0;
 
 function init() {
   console.log("READY");
   // add event handler
   $(".js-btn-equal").on("click", submitNumbers);
-  // add event handler for operators
-  $(".js-calculator-input").on("click", checkOperator);
+  // add event handler for keys pressed
+  $(".js-calculator-btn").on("click", checkKeys);
   // add event handler for clear button
   $(".js-btn-clear").on("click", clearInputs);
   // display history upon page load
@@ -18,17 +20,18 @@ function init() {
 // event handler
 
 function clearInputs() {
-  $(".js-input-num1").val("");
-  $(".js-input-num2").val("");
+  $(".js-calculation-display").val("");
   operator = "";
+  num1 = 0;
+  num2 = 0;
 }
 
 function submitNumbers() {
   console.log("EQUAL BUTTON CLICKED");
-  if ($(".js-input-num1").val() && $(".js-input-num2").val()) {
+  if ($(".js-calculator-display").val() != 0) {
     const newNumberInputs = {
-      num1: $(".js-input-num1").val(),
-      num2: $(".js-input-num2").val(),
+      num1: num1,
+      num2: num2,
       operator: operator
     };
     console.log(newNumberInputs);
@@ -38,8 +41,8 @@ function submitNumbers() {
   }
 }
 
-// find the correct operator key clicked
-function checkOperator(event) {
+// find the correct key clicked
+function checkKeys(event) {
   const target = event.target;
   if (target.matches("button") != true) {
     return;
@@ -47,7 +50,26 @@ function checkOperator(event) {
   if (target.classList.contains("js-operator")) {
     console.log("OPERATOR: ", target.value);
     operator = target.value;
-    return operator;
+    renderDisplay(num1 + operator);
+    return;
+  }
+  if (target.classList.contains("js-number")) {
+    console.log("NUMBER: ", target.value);
+    if (num1 != 0) {
+      num1 += target.value;
+    } else {
+      num1 = target.value;
+    }
+    renderDisplay(num1);
+    return;
+  }
+  if (target.classList.contains("js-decimal")) {
+    console.log("DECIMAL: ", target.value);
+    if (!num1.includes(".")) {
+      num1 += target.value;
+      renderDisplay(num1);
+    }
+    return;
   }
 }
 
@@ -107,9 +129,12 @@ function getHistory() {
 
 // render to the DOM
 
-// render result to DOM
-function renderResult(result) {
-  $(".js-calculator-result").text(result);
+// render keys clicked to DOM
+// function renderResult(result) {
+//   $(".js-calculator-result").text(result);
+// }
+function renderDisplay(num) {
+  $(".js-calculator-display").val(num);
 }
 
 // render history to server
